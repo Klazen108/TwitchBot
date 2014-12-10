@@ -27,7 +27,7 @@ public class Main extends JFrame {
 		        bot.disconnect();
 		    }
 		});
-
+ 
 		try {
 			bot = new ZuzuBot("Tanasinn69","oauth:q4n4z79oy47wbibf8edppxxzsceuga","irc.twitch.tv",6667, "zuzuFile.txt");
 	        //bot.setVerbose(true);
