@@ -1,4 +1,6 @@
 package com.klazen.irc;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -14,14 +16,24 @@ public class Main extends JFrame {
 		
 	}
 	
+	ZuzuBot bot;
+	
 	public Main() {
 		super("Pomf Pomf Kappa b Now Let's All Post FrankerZ (tm) 2014..... KID");
 		
+		addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		        bot.onClose();
+		    }
+		});
+		
 		try {
-	        ZuzuBot bot = new ZuzuBot("Tanasinn69","oauth:q4n4z79oy47wbibf8edppxxzsceuga","irc.twitch.tv",6667);
+	         bot = new ZuzuBot("Tanasinn69","oauth:q4n4z79oy47wbibf8edppxxzsceuga","irc.twitch.tv",6667, "C:\\zuzuFile.txt");
 	        bot.setVerbose(true);
 	        bot.joinChannel("#klazen108");
-		} catch (IOException | IrcException e) {
+	        bot.sendMessage("#klazen108", "HeyGuys");
+		} catch (IOException | IrcException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
