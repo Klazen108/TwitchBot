@@ -25,4 +25,4 @@ public class Main extends JFrame {
 			e.printStackTrace();
 		}
 	}Kappa
-}
+}Kappa
