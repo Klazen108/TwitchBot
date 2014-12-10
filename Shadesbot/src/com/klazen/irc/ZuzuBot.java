@@ -38,7 +38,7 @@ public class ZuzuBot extends MyBot {
 	}
 	
 	public void onMessage(String channel, String sender, String login, String hostname, String message) {
-		System.out.println("#"+channel+" "+sender+": "+message);
+		System.out.println(channel+" "+sender+": "+message);
 		
 		User user = getUser(sender);
 		user.setZuzus(user.getZuzus()+1);
@@ -48,7 +48,7 @@ public class ZuzuBot extends MyBot {
 	/**
 	 * Call this when the IRC bot needs to clean up and close.
 	 */
-	public void onClose() {
+	public void onDisconnect() {
 		System.out.println("Closing...");
 		try {
 			if (userFile != null) saveUsers(userFile);

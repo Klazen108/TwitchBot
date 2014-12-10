@@ -18,29 +18,24 @@ public class Main extends JFrame {
 	
 	public Main() {
 		super("Pomf Pomf Kappa b Now Let's All Post FrankerZ (tm) 2014..... KID");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(800,600);
 		
 		addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		        bot.onClose();
+		        bot.disconnect();
 		    }
 		});
-		
-		ircThread = new Runnable() {
-			@Override
-			public void run() {
-				try {
-					bot = new ZuzuBot("Tanasinn69","oauth:q4n4z79oy47wbibf8edppxxzsceuga","irc.twitch.tv",6667, "zuzuFile.txt");
-			        //bot.setVerbose(true);
-			        bot.joinChannel("#klazen108");
-			        bot.sendMessage("#klazen108", "HeyGuys");
-				} catch (IOException | IrcException | ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		
-		new Thread(ircThread).run();
-			
+
+		try {
+			bot = new ZuzuBot("Tanasinn69","oauth:q4n4z79oy47wbibf8edppxxzsceuga","irc.twitch.tv",6667, "zuzuFile.txt");
+	        //bot.setVerbose(true);
+	        bot.joinChannel("#klazen108");
+	        bot.sendMessage("#klazen108", "HeyGuys");
+		} catch (IOException | IrcException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		System.out.println("exit constr");
 	}
 }
