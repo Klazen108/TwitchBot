@@ -27,10 +27,10 @@ public class ZuzuBot extends MyBot {
 	
 	public ZuzuBot(String nick, String password, String URL, int port, String userFile) throws NickAlreadyInUseException, IOException, IrcException, ClassNotFoundException {
 		this(nick, password, URL, port);
-		
+
+		this.userFile = userFile;
 		try {
 			loadUsers(userFile);
-			this.userFile = userFile;
 		} catch (FileNotFoundException e) {
 			System.out.println("Failed to load from file: "+userFile);
 			System.out.println(e.getLocalizedMessage());
@@ -65,7 +65,10 @@ public class ZuzuBot extends MyBot {
 	 */
 	private User getUser(String username) {
 		User user = zuzuMap.get(username);
-		if (user==null) user = User.createEmpty(username);
+		if (user==null) {
+			user = new User(username);
+			zuzuMap.put(username, user);
+		}
 		return user;
 	}
 	
