@@ -24,5 +24,5 @@ public class Main extends JFrame {
 		} catch (IOException | IrcException e) {
 			e.printStackTrace();
 		}
-	}
+	}Kappa
 }
