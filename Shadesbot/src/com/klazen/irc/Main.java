@@ -33,7 +33,6 @@ public class Main extends JFrame {
 	        //bot.setVerbose(true);
 	        bot.joinChannel("#klazen108");
 	        bot.sendMessage("#klazen108", "HeyGuys");
-	        System.out.println("I <3 Klazen");
 		} catch (IOException | IrcException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}

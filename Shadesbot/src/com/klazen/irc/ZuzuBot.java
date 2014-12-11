@@ -47,9 +47,11 @@ public class ZuzuBot extends MyBot {
 		System.out.println(channel+" "+sender+": "+message);
 		
 		ZUser user = getUser(sender);
+		if(message.contentEquals("!duel") && getIRCUser(channel, sender).hasVoice()){
+			duel();
+		}
 		user.setZuzus(user.getZuzus()+1);
 		System.out.println("Gave "+sender+" one zuzu, he has " + user.getZuzus() + " now OpieOP");
-		getIRCUser(channel,sender);
 	}
 	
 	/**
@@ -79,13 +81,6 @@ public class ZuzuBot extends MyBot {
 		return user;
 	}
 	
-	private User getIRCUser(String channel, String username) {
-		for (User u : getUsers(channel)) {
-			if (u.equals(username)) return u;
-		}
-		return null;
-	}
-	
 	public void loadUsers(String filename) throws IOException, ClassNotFoundException {
 		System.out.println("Loading users...");
 		synchronized (zuzuMap) {
@@ -105,7 +100,18 @@ public class ZuzuBot extends MyBot {
 		}
 		System.out.println("Save completed.");
 	}
-
+	
+	private User getIRCUser(String channel, String username){
+		for(User u: getUsers(channel)){
+			if(u.equals(username)) return u;
+		}
+		return null;
+	}
+	
+	public void duel (){
+	
+		sendMessage("#klazen108", "Duel!");
+	}
 	
 	class ZuzuTask extends TimerTask {
 
