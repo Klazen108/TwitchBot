@@ -29,7 +29,7 @@ public class Main extends JFrame {
 		});
  
 		try {
-			bot = new ZuzuBot("Tanasinn69","oauth:q4n4z79oy47wbibf8edppxxzsceuga","irc.twitch.tv",6667, "zuzuFile.txt");
+			bot = new ZuzuBot("Tanasinn69","oauth:q4n4z79oy47wbibf8edppxxzsceuga","irc.twitch.tv",443, "zuzuFile.txt");
 	        //bot.setVerbose(true);
 	        bot.joinChannel("#klazen108");
 	        bot.sendMessage("#klazen108", "HeyGuys");

@@ -8,12 +8,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
+import org.jibble.pircbot.User;
 
 public class ZuzuBot extends MyBot {
-	Map<String,User> zuzuMap;
+	Map<String,ZUser> zuzuMap;
 
 	String userFile;
 	
@@ -23,6 +26,9 @@ public class ZuzuBot extends MyBot {
 		System.out.println("Init");
 		zuzuMap = new HashMap<>(100);
 		userFile = null;
+		
+		Timer timer = new Timer();
+		timer.schedule(new ZuzuTask(), 60000, 60000);
 	}
 	
 	public ZuzuBot(String nick, String password, String URL, int port, String userFile) throws NickAlreadyInUseException, IOException, IrcException, ClassNotFoundException {
@@ -40,9 +46,10 @@ public class ZuzuBot extends MyBot {
 	public void onMessage(String channel, String sender, String login, String hostname, String message) {
 		System.out.println(channel+" "+sender+": "+message);
 		
-		User user = getUser(sender);
+		ZUser user = getUser(sender);
 		user.setZuzus(user.getZuzus()+1);
 		System.out.println("Gave "+sender+" one zuzu, he has " + user.getZuzus() + " now OpieOP");
+		getIRCUser(channel,sender);
 	}
 	
 	/**
@@ -63,20 +70,27 @@ public class ZuzuBot extends MyBot {
 	 * @param username
 	 * @return
 	 */
-	private User getUser(String username) {
-		User user = zuzuMap.get(username);
+	private ZUser getUser(String username) {
+		ZUser user = zuzuMap.get(username);
 		if (user==null) {
-			user = new User(username);
+			user = new ZUser(username);
 			zuzuMap.put(username, user);
 		}
 		return user;
+	}
+	
+	private User getIRCUser(String channel, String username) {
+		for (User u : getUsers(channel)) {
+			if (u.equals(username)) return u;
+		}
+		return null;
 	}
 	
 	public void loadUsers(String filename) throws IOException, ClassNotFoundException {
 		System.out.println("Loading users...");
 		synchronized (zuzuMap) {
 			try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename)))  {
-				zuzuMap = (Map<String,User>) ois.readObject();
+				zuzuMap = (Map<String,ZUser>) ois.readObject();
 			}
 		}
 		System.out.println("Load completed.");
@@ -92,4 +106,17 @@ public class ZuzuBot extends MyBot {
 		System.out.println("Save completed.");
 	}
 
+	
+	class ZuzuTask extends TimerTask {
+
+		@Override
+		public void run() {
+			System.out.println("Giving users zuzus...");
+			for (User curUser : getUsers("#klazen108")) {
+				ZUser user = getUser(curUser.getNick());
+				user.setZuzus(user.getZuzus()+1);
+			}
+		}
+		
+	}
 }
