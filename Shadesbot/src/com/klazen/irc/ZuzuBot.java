@@ -24,6 +24,7 @@ public class ZuzuBot extends MyBot {
 		System.out.println("Init");
 		zuzuMap = new HashMap<>(100);
 		userFile = null;
+		
 	}
 	
 	public ZuzuBot(String nick, String password, String URL, int port, String userFile) throws NickAlreadyInUseException, IOException, IrcException, ClassNotFoundException {
@@ -40,7 +41,7 @@ public class ZuzuBot extends MyBot {
 	
 	public void onMessage(String channel, String sender, String login, String hostname, String message) {
 		System.out.println(channel+" "+sender+": "+message);
-		if(message.contentEquals("!duel") && getIRCUser(channel, sender).hasVoice()){
+		if(message.contentEquals("!duel") && getIRCUser(channel, sender).isOp()){
 			duel();
 		}
 		ZUser user = getUser(sender);
@@ -96,12 +97,19 @@ public class ZuzuBot extends MyBot {
 	}
 	
 	private User getIRCUser(String channel, String username){
-		for(User u: getUsers(channel)){
-			if(u.equals(username)) return u;
+		User [] users = getUsers(channel);
+		System.out.println(username);
+		for(int i = 0 ; i < users.length; ++i){
+			System.out.println(users[i]);
+			if(users[i].getNick().contains(username)){
+				System.out.println("I found one!");
+				return users[i];
+			}
 		}
+		
 		return null;
 	}
-	
+			
 	public void duel (){
 	
 		sendMessage("#klazen108", "Duel!");
