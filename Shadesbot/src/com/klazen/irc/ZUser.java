@@ -22,6 +22,14 @@ public class ZUser implements Serializable {
 		this.username = username;
 	}
 	
+	public void addZuzus(int i){
+		this.zuzus += i;
+	}
+	
+	public void chargeZuzus(int i){
+		this.zuzus -= i;
+	}
+	
 	public ZUser(String username) {
 		this.username=username;
 		this.zuzus=0;

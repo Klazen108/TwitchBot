@@ -2,11 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="E:/eclipse_workspace/Java Libraries/slf4j-1.7.7/slf4j-api-1.7.7.jar"/>
-	<classpathentry kind="lib" path="E:/eclipse_workspace/Java Libraries/slf4j-1.7.7/slf4j-simple-1.7.7.jar"/>
-	<classpathentry kind="lib" path="E:/eclipse_workspace/Java Libraries/guava-18.0.jar"/>
-	<classpathentry kind="lib" path="E:/eclipse_workspace/Java Libraries/pircbotx-2.0.1.jar"/>
-	<classpathentry kind="lib" path="E:/eclipse_workspace/Java Libraries/commons-codec-1.10/commons-codec-1.10.jar"/>
-	<classpathentry kind="lib" path="E:/eclipse_workspace/Java Libraries/commons-lang3-3.3.2/commons-lang3-3.3.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Martin/workspace/zuzubot_libraries/slf4j-api-1.7.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Martin/workspace/zuzubot_libraries/slf4j-simple-1.7.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Martin/workspace/zuzubot_libraries/guava-18.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Martin/workspace/zuzubot_libraries/pircbotx-2.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Martin/workspace/zuzubot_libraries/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Martin/workspace/zuzubot_libraries/commons-lang3-3.3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
