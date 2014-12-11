@@ -11,9 +11,10 @@ import java.util.Map;
 
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
+import org.jibble.pircbot.User;
 
 public class ZuzuBot extends MyBot {
-	Map<String,User> zuzuMap;
+	Map<String,ZUser> zuzuMap;
 
 	String userFile;
 	
@@ -39,8 +40,10 @@ public class ZuzuBot extends MyBot {
 	
 	public void onMessage(String channel, String sender, String login, String hostname, String message) {
 		System.out.println(channel+" "+sender+": "+message);
-		
-		User user = getUser(sender);
+		if(message.contentEquals("!duel") && getIRCUser(channel, sender).hasVoice()){
+			duel();
+		}
+		ZUser user = getUser(sender);
 		user.setZuzus(user.getZuzus()+1);
 		System.out.println("Gave "+sender+" one zuzu, he has " + user.getZuzus() + " now OpieOP");
 	}
@@ -63,10 +66,10 @@ public class ZuzuBot extends MyBot {
 	 * @param username
 	 * @return
 	 */
-	private User getUser(String username) {
-		User user = zuzuMap.get(username);
+	private ZUser getUser(String username) {
+		ZUser user = zuzuMap.get(username);
 		if (user==null) {
-			user = new User(username);
+			user = new ZUser(username);
 			zuzuMap.put(username, user);
 		}
 		return user;
@@ -76,7 +79,7 @@ public class ZuzuBot extends MyBot {
 		System.out.println("Loading users...");
 		synchronized (zuzuMap) {
 			try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename)))  {
-				zuzuMap = (Map<String,User>) ois.readObject();
+				zuzuMap = (Map<String,ZUser>) ois.readObject();
 			}
 		}
 		System.out.println("Load completed.");
@@ -91,5 +94,16 @@ public class ZuzuBot extends MyBot {
 		}
 		System.out.println("Save completed.");
 	}
-
+	
+	private User getIRCUser(String channel, String username){
+		for(User u: getUsers(channel)){
+			if(u.equals(username)) return u;
+		}
+		return null;
+	}
+	
+	public void duel (){
+	
+		sendMessage("#klazen108", "Duel!");
+	}
 }

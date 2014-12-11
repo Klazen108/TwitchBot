@@ -2,7 +2,7 @@ package com.klazen.irc;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+public class ZUser implements Serializable {
 	String username;
 	int zuzus;
 	
@@ -22,7 +22,7 @@ public class User implements Serializable {
 		this.username = username;
 	}
 	
-	public User(String username) {
+	public ZUser(String username) {
 		this.username=username;
 		this.zuzus=0;
 	}
