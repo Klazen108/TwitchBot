@@ -11,29 +11,27 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.jibble.pircbot.IrcException;
-import org.jibble.pircbot.NickAlreadyInUseException;
-import org.jibble.pircbot.User;
+import org.pircbotx.Channel;
+import org.pircbotx.PircBotX;
+import org.pircbotx.User;
+import org.pircbotx.hooks.ListenerAdapter;
+import org.pircbotx.hooks.events.JoinEvent;
+import org.pircbotx.hooks.events.MessageEvent;
 
-public class ZuzuBot extends MyBot {
+public class ZuzuBot extends ListenerAdapter {
 	Map<String,ZUser> zuzuMap;
 
 	String userFile;
 	
-	public ZuzuBot(String nick, String password, String URL, int port) throws NickAlreadyInUseException, IOException, IrcException {
-		super(nick, password, URL, port);
-		
-		System.out.println("Init");
-		zuzuMap = new HashMap<>(100);
-		userFile = null;
-		
-		Timer timer = new Timer();
-		timer.schedule(new ZuzuTask(), 60000, 60000);
+	PircBotX bot;
+	
+	public void setBot(PircBotX bot) {
+		this.bot = bot;
 	}
 	
-	public ZuzuBot(String nick, String password, String URL, int port, String userFile) throws NickAlreadyInUseException, IOException, IrcException, ClassNotFoundException {
-		this(nick, password, URL, port);
-
+	public ZuzuBot(String userFile) throws ClassNotFoundException, IOException  {
+		zuzuMap = new HashMap<>(100);
+		
 		this.userFile = userFile;
 		try {
 			loadUsers(userFile);
@@ -41,18 +39,32 @@ public class ZuzuBot extends MyBot {
 			System.out.println("Failed to load from file: "+userFile);
 			System.out.println(e.getLocalizedMessage());
 		}
+		
+		Timer timer = new Timer();
+		timer.schedule(new ZuzuTask(), 10000, 10000);
+		
+		System.out.println("init");
 	}
 	
-	public void onMessage(String channel, String sender, String login, String hostname, String message) {
-		System.out.println(channel+" "+sender+": "+message);
+	public void onMessage(MessageEvent event) {
+		String message = event.getMessage();
+		Channel channel = event.getChannel();
+		User sender = event.getUser();
 		
-		ZUser user = getUser(sender);
-		if(message.contentEquals("!duel") && getIRCUser(channel, sender).hasVoice()){
-			duel();
+		System.out.println(channel.getName()+" "+sender.getNick()+": "+message);
+		if(message.contentEquals("!duel") && channel.isOp(sender)){
+			duel(event);
 		}
+		
+		ZUser user = getUser(sender.getNick());
 		user.setZuzus(user.getZuzus()+1);
-		System.out.println("Gave "+sender+" one zuzu, he has " + user.getZuzus() + " now OpieOP");
+		System.out.println("Gave "+sender.getNick()+" one zuzu, he has " + user.getZuzus() + " now OpieOP");
+		
+        //When someone says hello, respond with Hello World
+        if (event.getMessage().startsWith("?helloworld"))
+                event.respond("Hello world!");
 	}
+	
 	
 	/**
 	 * Call this when the IRC bot needs to clean up and close.
@@ -74,7 +86,7 @@ public class ZuzuBot extends MyBot {
 	 */
 	private ZUser getUser(String username) {
 		ZUser user = zuzuMap.get(username);
-		if (user==null) {
+		if (user == null) {
 			user = new ZUser(username);
 			zuzuMap.put(username, user);
 		}
@@ -84,8 +96,11 @@ public class ZuzuBot extends MyBot {
 	public void loadUsers(String filename) throws IOException, ClassNotFoundException {
 		System.out.println("Loading users...");
 		synchronized (zuzuMap) {
-			try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename)))  {
+			try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
 				zuzuMap = (Map<String,ZUser>) ois.readObject();
+			} catch (FileNotFoundException e) {
+				System.out.println("Tried opening saved info, but file was not found. Ignoring.");
+				//do nothing if you can't find the file, that's normal for first operation
 			}
 		}
 		System.out.println("Load completed.");
@@ -101,16 +116,8 @@ public class ZuzuBot extends MyBot {
 		System.out.println("Save completed.");
 	}
 	
-	private User getIRCUser(String channel, String username){
-		for(User u: getUsers(channel)){
-			if(u.equals(username)) return u;
-		}
-		return null;
-	}
-	
-	public void duel (){
-	
-		sendMessage("#klazen108", "Duel!");
+	public void duel (MessageEvent event){
+		event.respond("Duel!");
 	}
 	
 	class ZuzuTask extends TimerTask {
@@ -118,7 +125,7 @@ public class ZuzuBot extends MyBot {
 		@Override
 		public void run() {
 			System.out.println("Giving users zuzus...");
-			for (User curUser : getUsers("#klazen108")) {
+			for (User curUser : bot.getUserChannelDao().getUsers(bot.getUserChannelDao().getChannel("#klazen108"))) {
 				ZUser user = getUser(curUser.getNick());
 				user.setZuzus(user.getZuzus()+1);
 			}
