@@ -118,7 +118,7 @@ public class ZuzuBot extends ListenerAdapter {
 	 * @param username
 	 * @return
 	 */
-	private ZUser getUser(String username) {
+	ZUser getUser(String username) {
 		ZUser user = zuzuMap.get(username);
 		if (user == null) {
 			user = new ZUser(username);
