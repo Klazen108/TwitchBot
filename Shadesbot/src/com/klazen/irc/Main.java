@@ -1,7 +1,5 @@
 package com.klazen.irc;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -11,14 +9,10 @@ import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
-import org.pircbotx.User;
 import org.pircbotx.exception.IrcException;
 
 public class Main extends JFrame {
@@ -58,11 +52,11 @@ public class Main extends JFrame {
 		        	zbot = new ZuzuBot("zuzuFile");
 					
 			        //Configure what we want our bot to do
-			        Configuration configuration = new Configuration.Builder()
-			                        .setName("Tanasinn69")
+					Configuration configuration = new Configuration.Builder()
+			                        .setName("ZuzuB0t")
 			                        .setServer("irc.twitch.tv", 80)
-			                        .setServerPassword("oauth:q4n4z79oy47wbibf8edppxxzsceuga")
-			                        .addAutoJoinChannel("#klazen108") 
+			                        .setServerPassword("oauth:b2xqi1x0vv3oa41s010k8nro2wi63n")
+			                        .addAutoJoinChannel("#zurairofl") 
 			                        .addListener(zbot) 
 			                        .buildConfiguration();
 			
